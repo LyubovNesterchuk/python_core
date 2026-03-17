@@ -89,9 +89,10 @@ print(sorted_nums)  # Виведе [1, 1, 2, 3, 4, 5, 9]
 sorted_nums_desc = sorted(nums, reverse=True)
 print(sorted_nums_desc)  # Виведе [9, 5, 4, 3, 2, 1, 1]
 
-words = ["banana", "apple", "cherry"]
-sorted_words = sorted(words, key=len)
-print(sorted_words)  # Виведе ['apple', 'banana', 'cherry']
+words = ["bananas", "apple", "cherry"]
+sorted_words = sorted(words, key=len) # за довжиною елемента
+print(sorted_words)  # Виведе ['apple', 'cherry', 'bananas']
+
 
 
 #########################

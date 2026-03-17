@@ -126,6 +126,8 @@ if some_data:
 else:
     msg = "Не було повернено даних"
 
+
+
 # Тернарні операції
 
 is_nice = True
@@ -245,19 +247,82 @@ while a < 6:
         continue
     print(a)  # 1 3 5
 
+# Оператори continue та break працюють тільки всередині одного циклу.
+# В ситуації вкладених циклів немає способу вийти з усіх циклів одразу.
+# використання continue або break поза циклом призводить до синтаксичної помилки.
+
+
+
+my_list = [1, 2, None, 5, 8 ,None, None]
+print(my_list.index(None)) # 2
+
+while range(len(my_list)):
+    if None not in my_list:
+        break
+    my_list.pop(my_list.index(None)) #видалить усі None
+
+print(my_list) #[1, 2, 5, 8]
+
+
+
+condition = True
+start = 1
+while condition:          # while start != 7:
+    if start == 7:
+        condition = False
+    print("start ", end = '') #start start start start start start start Out of the loop
+    start += 1
+else:
+    print("Out of the loop")
+
+
+
+increment = 0
+while increment <= 3:
+    print(increment, end = '')
+    increment += 1
+else:
+    print(0) #01230
+
+
+
+string = "break statement"
+for letter in string:
+    print(letter, end = '')
+    if letter == 'e' or letter == 's':
+        break
+    print(" Out of the loop")
+'''виведе
+b Out of the loop
+r Out of the loop
+e'''
+
+
+for letter in string:
+    print(letter, end = '')
+    if letter == 'e' or letter == 's':
+        continue
+    print(" Out of the loop")
+'''виведе
+b Out of the loop
+r Out of the loop
+ea Out of the loop
+k Out of the loop
+  Out of the loop
+st Out of the loop
+a Out of the loop
+t Out of the loop
+em Out of the loop
+en Out of the loop
+t Out of the loop'''
+
+
 
 for i in range(1, 10):
     if i % 2 == 0:
         print(f'{i} є парним числом.')
     else:
         print(f'{i} є непарним числом.')
-
-
-# Оператори continue та break працюють тільки всередині одного циклу.
-# В ситуації вкладених циклів немає способу вийти з усіх циклів одразу.
-
-# використання continue або break поза циклом призводить до синтаксичної помилки.
-
 
 for i in range(5):
     print(i) # 0 1 2 3 4
@@ -270,7 +335,9 @@ for i in range(0, 10, 2):
 
 
 some_list = ["apple", "banana", "cherry"]
-for index, value in enumerate(some_list):
+# enumerate() — це вбудована функція Python, 
+# яка дозволяє одночасно отримувати індекс елемента і сам елемент під час перебору списку
+for index, value in enumerate(some_list): 
     print(index, value) # 0 apple 1 banana 2 cherry
 
 
@@ -310,6 +377,7 @@ for val in numbers.values():
 
 for key, value in numbers.items():
     print(key, value) # 1 one 2 two 3 three
+
 
 
 ## Основні типи винятків у Python
