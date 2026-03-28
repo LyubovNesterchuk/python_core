@@ -225,13 +225,322 @@ if __name__ == '__main__':
     print(temperatures) # [19, 21, 22]   Item 27 must be between 18 and 26     [19, 21, 22, 20, 22, 25]
 
 
-
+'''методи для перевизначення математичних операторів:
+__add__(self, other) для оператора +
+__sub__(self, other) для оператора -
+__mul__(self, other) для оператора *
+__truediv__(self, other) для оператора /
+__floordiv__(self, other) для оператора цілочисельного ділення //
+__mod__(self, other) для оператора залишку від ділення %
+__pow__(self, other) для оператора * піднесення до степеня'''
     
 
+from collections import UserDict
+
+class MyDict(UserDict):
+    def __add__(self, other):
+        temp_dict = self.data.copy()
+        temp_dict.update(other)
+        return MyDict(temp_dict)
+
+    def __sub__(self, other):
+        temp_dict = self.data.copy()
+        for key in other:
+            if key in temp_dict:
+                temp_dict.pop(key)
+        return MyDict(temp_dict)
+
+if __name__ == '__main__':
+    d1 = MyDict({1: 'a', 2: 'b'})
+    d2 = MyDict({3: 'c', 4: 'd'})
+
+    d3 = d1 + d2
+    print(d3) # {1: 'a', 2: 'b', 3: 'c', 4: 'd'}
+
+    d4 = d3 - d2
+    print(d4) # {1: 'a', 2: 'b'}
 
 
 
+#--------------------------
+
+class ComplexNumber:
+    def __init__(self, real, imag):
+        self.real = real
+        self.imag = imag
+
+    def __add__(self, other):
+        return ComplexNumber(self.real + other.real, self.imag + other.imag)
+
+    def __sub__(self, other):
+        return ComplexNumber(self.real - other.real, self.imag - other.imag)
+
+    def __mul__(self, other):
+        real_part = self.real * other.real - self.imag * other.imag
+        imag_part = self.real * other.imag + self.imag * other.real
+        return ComplexNumber(real_part, imag_part)
+
+    def __str__(self):
+        return f"{self.real} + {self.imag}i"
+
+if __name__ == "__main__":
+    num1 = ComplexNumber(1, 2)
+    num2 = ComplexNumber(3, 4)
+    print(f"Сума: {num1 + num2}")
+    print(f"Різниця: {num1 - num2}")
+    print(f"Добуток: {num1 * num2}")
 
 
+#------------------------------------------------
 
+'''реалізуємо векторне множення, де результатом є скалярний добуток векторів'''
+
+from collections import UserList
+
+class MulArray(UserList):
+    def __init__(self, *args):
+        self.data = list(args)
+
+    def __mul__(self, other):
+        return self.__scalar_mul(other)
+    
+    def __rmul__(self, other):
+        return self.__scalar_mul(other) 
+    
+    def __scalar_mul(self, other):
+        result = 0
+        for i in range(min(len(self.data), len(other))):
+            result += self.data[i] * other[i]
+        return result
+
+if __name__ == '__main__':
+    vec1 = MulArray(1, 2, 3)
+    vec2 = MulArray(3, 4, 5)
+
+    print(vec1 * vec2) # 26
+    print(vec1 * [1, 2, 3]) #14
+    print([1, 1, 1] * vec2) #12
+
+
+'''операції порівняння, як і інші оператори, мають свої "магічні" методи:
+
+__eq__(self, other) — визначає поведінку під час перевірки на відповідність (==).
+__ne__(self, other) — визначає поведінку під час перевірки на невідповідність. !=.
+__lt__(self, other) — визначає поведінку під час перевірки на менше <.
+__gt__(self, other) — визначає поведінку під час перевірки на більше >.
+__le__(self, other) — визначає поведінку під час перевірки на менше-дорівнює <=.
+__ge__(self, other) — визначає поведінку під час перевірки на більше-дорівнює >=.
+'''
+
+''' клас Rectangle, який представляє прямокутник з двома властивостями: 
+шириною width і висотою height. 
+порівнювати прямокутники на основі розміру їх площі.'''
+
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def __eq__(self, other):
+        if not isinstance(other, Rectangle):# є прийнятою практикою, коли ви стикаєтеся 
+            #з ситуацією, де ваш метод не знає, як порівнювати об'єкт з іншим типом об'єкта
+            return NotImplemented 
+        return self.area() == other.area()
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        if not isinstance(other, Rectangle):
+            return NotImplemented
+        return self.area() < other.area()
+
+    def __le__(self, other):
+        return self.__lt__(other) or self.__eq__(other)
+
+    def __gt__(self, other):
+        if not isinstance(other, Rectangle):
+            return NotImplemented
+        return self.area() > other.area()
+
+    def __ge__(self, other):
+        return self.__gt__(other) or self.__eq__(other)
+
+if __name__ == "__main__":
+    rect1 = Rectangle(5, 10)
+    rect2 = Rectangle(3, 20)
+    rect3 = Rectangle(5, 10)
+    print(f"Площа прямокутників: {rect1.area()}, {rect2.area()}, {rect3.area()}")
+    print(rect1 == rect3)  # True: площі рівні
+    print(rect1 != rect2)  # True: площі не рівні
+    print(rect1 < rect2)  # True: площа rect1  менша, ніж у rect2
+    print(rect1 <= rect3)  # True: площі рівні, тому rect1 <= rect3
+    print(rect1 > rect2)  # False: площа rect1 менша, ніж у rect2
+    print(rect1 >= rect3)  # True: площі рівні, тому rect1 >= rect3
+
+    #-----------------
+
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __eq__(self, other):
+        if not isinstance(other, Point):
+            return NotImplemented
+        return self.x == other.x and self.y == other.y
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        if not isinstance(other, Point):
+            return NotImplemented
+        return self.x < other.x and self.y < other.y
+
+    def __gt__(self, other):
+        if not isinstance(other, Point):
+            return NotImplemented
+        return self.x > other.x and self.y > other.y
+
+    def __le__(self, other):
+        if not isinstance(other, Point):
+            return NotImplemented
+        return self.x <= other.x and self.y <= other.y
+
+    def __ge__(self, other):
+        if not isinstance(other, Point):
+            return NotImplemented
+        return self.x >= other.x and self.y >= other.y
+
+if __name__ == "__main__":
+    print(Point(0, 0) == Point(0, 0))  # True
+    print(Point(0, 0) != Point(0, 0))  # False
+    print(Point(0, 0) < Point(1, 0))  # False
+    print(Point(0, 0) > Point(0, 1))  # False
+    print(Point(0, 2) >= Point(0, 1))  # True
+    print(Point(0, 0) <= Point(0, 0))  # True
+
+
+'''У мові програмування Python, поля - це змінні, які зберігають інформацію про стан об'єкта.
+Доступ до цих полів та їх модифікація зазвичай відбувається безпосередньо, але іноді необхідно 
+контролювати цей процес, наприклад, для валідації даних або інкапсуляції. Для цього існують 
+спеціальні методи які називають гетерами та сетерами. 
+Гетери дозволяють отримати значення поля. Вони використовуються, коли доступ до поля потребує якоїсь 
+додаткової обробки або коли безпосередній доступ до поля не бажаний з міркувань інкапсуляції.
+Наприклад, якщо потрібно завжди повертати значення поля у вигляді рядка, навіть якщо воно зберігається 
+як число.
+Сетери дозволяють встановити значення поля, використовуються для валідації даних, які намагаються 
+присвоїти полю. Наприклад, якщо ми маємо поле, який повинно приймати значення лише додатні числа, 
+можна в сетері додати перевірку, яка буде викидати виняток або повертати помилку, якщо намагатися 
+присвоїти йому від'ємне число.
+Вбудований декоратор @property робить метод класу доступним як поле, тобто його можна буде викликати
+без дужок.  Для створення сетера для того ж поля, що і гетер, використовується
+декоратор @property.setter, який застосовується до методу з тим же ім'ям, що і властивість.'''
+
+class Person:
+    def __init__(self, age):
+        # Спочатку встановлюємо __age як None
+        self.__age = None
+        # Використовуємо сеттер для встановлення віку, що дозволяє валідацію вхідного значення
+        self.age = age
+
+    @property
+    def age(self):
+        return self.__age  # Геттер повертає значення приватного поля
+
+    @age.setter
+    def age(self, value):
+        if value < 0:
+            # Валідація вхідного значення
+            raise ValueError("Вік не може бути від'ємним")  
+        # Присвоєння валідного значення приватному полю
+        self.__age = value  
+
+if __name__ == "__main__":
+    person = Person(10)
+    print(person.age)
+    #person.age = -5
+
+
+#---------------------------------------------
+
+class Person:
+    def __init__(self, name: str, age: int, is_active: bool, is_admin: bool):
+        self.name = name
+        self.age = age
+        self._is_active = None
+        self.__is_admin = None
+        self._is_active = is_active
+        self.__is_admin = is_admin
+
+    @property
+    def is_active(self):
+        return self._is_active
+
+    @is_active.setter
+    def is_active(self, value: bool):
+        # Тут можна додати будь-яку логіку перевірки або обробки
+        self._is_active = value
+
+    @property
+    def is_admin(self):
+        return self.__is_admin
+
+    @is_admin.setter
+    def is_admin(self, value: bool):
+        # Тут можна додати будь-яку логіку перевірки або обробки
+        self.__is_admin = value
+
+    def greeting(self):
+        return f"Hi {self.name}"
+
+if __name__ == "__main__":
+    p = Person("Boris", 34, True, False)
+    print(p.is_admin)  # Використовуємо геттер
+    p.is_admin = True  # Використовуємо сеттер
+    print(p.is_admin)
+
+
+'''Статичні методи використовують декоратор @staticmethod і є методами, які не мають доступу до 
+екземпляру класу тобто змінної self, з якого вони були викликані. Це означає, що статичні методи 
+не можуть змінювати стан об'єкта або класу, але вони можуть бути корисними для виконання деяких 
+операцій, які не залежать від стану об'єкта. Статичні методи можна розглядати як "допоміжні" функції,
+які мають логічний зв'язок із класом, але не потребують доступу до його атрибутів або методів.
+'''
+
+class Geometry:
+    PI = 3.14159
+
+    @staticmethod
+    def area_of_circle(radius):
+        return Geometry.PI * radius ** 2
+
+print(Geometry.area_of_circle(5))  # 78.53975
+
+
+'''Класові методи використовують декоратор @classmethod і мають доступ до самого класу через 
+параметр cls, який автоматично передається Python. Це означає, що класові методи можуть змінювати 
+стан класу або викликати інші класові методи. '''
+
+class Employee:
+    def __init__(self, name, position):
+        self.name = name
+        self.position = position
+
+    @classmethod
+    def from_string(cls, employee_info):
+        name, position = employee_info.split(',')
+        return cls(name, position)
+# дозволяє створювати екземпляри Employee, розбираючи рядок на поля. Метод використовує параметр cls 
+# для створення нового екземпляра, гарантуючи, що він може бути успішно використаний навіть 
+# у класах-нащадках. В нашому прикладі cls це буде сам клас Employee.
+employee_info = "John Doe,Manager"
+john_doe = Employee.from_string(employee_info)
+
+print(john_doe.name)  # Виведе: John Doe
+print(john_doe.position)  # Виведе: Manager
 
