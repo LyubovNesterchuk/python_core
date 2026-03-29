@@ -477,7 +477,7 @@ class Person:
         self._is_active = is_active
         self.__is_admin = is_admin
 
-     
+    @property
     def is_active(self):
         return self._is_active
 
@@ -503,6 +503,34 @@ if __name__ == "__main__":
     print(p.is_admin)  # Використовуємо геттер
     p.is_admin = True  # Використовуємо сеттер
     print(p.is_admin)
+
+#---------------------------------------------
+
+class PositiveNumber:
+    def __init__(self):
+        self.__value = None
+
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, new_value):
+        if new_value > 0:
+            self.__value = new_value
+        else:
+            print('Only numbers greater zero accepted')
+
+
+p = PositiveNumber()
+p.value = 1
+print(p.value)  # 1
+p.value = -1  # Only numbers greater zero accepted
+p._PositiveNumber__value = -1
+print(p.value)  # -1
+
+
+
 
 
 '''Статичні методи використовують декоратор @staticmethod і є методами, які не мають доступу до 
