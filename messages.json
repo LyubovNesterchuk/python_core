@@ -1,0 +1,104 @@
+[
+  {
+    "content": "Hello, Ann",
+    "sending_time": "2026-03-31 20:09:13.187006",
+    "receiving_time": "None",
+    "author": {
+      "id": 1,
+      "first_name": "Lyubov",
+      "last_name": "Nest",
+      "phone_number": "1234567890"
+    },
+    "recipient": {
+      "id": 2,
+      "first_name": "Anna",
+      "last_name": "Nest",
+      "phone_number": "0987654321"
+    }
+  },
+  {
+    "content": "Hello, Lyubov",
+    "sending_time": "2026-03-31 20:09:13.187006",
+    "receiving_time": "None",
+    "author": {
+      "id": 2,
+      "first_name": "Anna",
+      "last_name": "Nest",
+      "phone_number": "0987654321"
+    },
+    "recipient": {
+      "id": 1,
+      "first_name": "Lyubov",
+      "last_name": "Nest",
+      "phone_number": "1234567890"
+    }
+  },
+  {
+    "content": "How are you?",
+    "sending_time": "2026-03-31 20:09:13.187006",
+    "receiving_time": "None",
+    "author": {
+      "id": 1,
+      "first_name": "Lyubov",
+      "last_name": "Nest",
+      "phone_number": "1234567890"
+    },
+    "recipient": {
+      "id": 2,
+      "first_name": "Anna",
+      "last_name": "Nest",
+      "phone_number": "0987654321"
+    }
+  },
+  {
+    "content": "Todo: finish homework",
+    "sending_time": "2026-03-31 20:09:13.187006",
+    "receiving_time": "None",
+    "author": {
+      "id": 2,
+      "first_name": "Anna",
+      "last_name": "Nest",
+      "phone_number": "0987654321"
+    },
+    "recipient": {
+      "id": 2,
+      "first_name": "Anna",
+      "last_name": "Nest",
+      "phone_number": "0987654321"
+    }
+  },
+  {
+    "content": "How are you?",
+    "sending_time": "2026-03-31 20:09:13.187006",
+    "receiving_time": "None",
+    "author": {
+      "id": 1,
+      "first_name": "Lyubov",
+      "last_name": "Nest",
+      "phone_number": "1234567890"
+    },
+    "recipient": {
+      "id": 3,
+      "first_name": "Nadya",
+      "last_name": "Roma",
+      "phone_number": "0987654211"
+    }
+  },
+  {
+    "content": "OK. And you?",
+    "sending_time": "2026-03-31 20:09:13.187006",
+    "receiving_time": "None",
+    "author": {
+      "id": 3,
+      "first_name": "Nadya",
+      "last_name": "Roma",
+      "phone_number": "0987654211"
+    },
+    "recipient": {
+      "id": 1,
+      "first_name": "Lyubov",
+      "last_name": "Nest",
+      "phone_number": "1234567890"
+    }
+  }
+]
