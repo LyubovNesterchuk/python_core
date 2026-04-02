@@ -326,3 +326,134 @@ with open(FILENAME, "r", encoding="utf-8", newline="") as f:
 
 
 
+#---------------------------------------------------------------
+import copy
+import pickle
+
+
+class Person:
+    def __init__(self, name: str, email: str, phone: str, favorite: bool):
+        self.name = name
+        self.email = email
+        self.phone = phone
+        self.favorite = favorite
+
+    @staticmethod
+    def copy_class_person(person):
+        copy_person = copy.copy(person)
+        return copy_person
+
+    def __copy__(self):
+        return Person(self.name, self.email, self.phone, self.favorite)
+
+    def __deepcopy__(self, memo):
+        return Person(
+            copy.deepcopy(self.name, memo),
+            copy.deepcopy(self.email, memo),
+            copy.deepcopy(self.phone, memo),
+            copy.deepcopy(self.favorite, memo),
+        )
+
+
+class Contacts:
+    def __init__(self, filename: str, contacts: list[Person] = None):
+        if contacts is None:
+            contacts = []
+        self.filename = filename
+        self.contacts = contacts
+        self.is_unpacking = False
+        self.count_save = 0
+
+    def save_to_file(self):
+        with open(self.filename, "wb") as file:
+            pickle.dump(self, file)
+
+    def read_from_file(self):
+        with open(self.filename, "rb") as file:
+            content = pickle.load(file)
+        return content
+
+    def __getstate__(self):
+        attributes = self.__dict__.copy()
+        attributes["count_save"] = attributes["count_save"] + 1
+        return attributes
+
+    def __setstate__(self, value):
+        self.__dict__ = value
+        self.is_unpacking = True
+
+    @staticmethod
+    def copy_class_contacts(contacts):
+        copy_contacts =copy.deepcopy(contacts)
+        return copy_contacts
+
+    def __copy__(self):
+        return Contacts(
+            self.filename,
+            copy.copy(self.contacts)  # shallow copy of list
+        )
+
+    def __deepcopy__(self, memo):
+        new_obj = Contacts(
+            copy.deepcopy(self.filename, memo),
+            copy.deepcopy(self.contacts, memo)
+        )
+        memo[id(self)] = new_obj
+        new_obj.count_save = self.count_save
+        new_obj.is_unpacking = self.is_unpacking
+        return new_obj
+    
+
+
+
+person = Person(
+    "Allen Raymond",
+    "nulla.ante@vestibul.co.uk",
+    "(992) 914-3792",
+    False,
+)
+
+contacts = [
+    Person(
+        "Allen Raymond",
+        "nulla.ante@vestibul.co.uk",
+        "(992) 914-3792",
+        False,
+    ),
+    Person(
+        "Chaim Lewis",
+        "dui.in@egetlacus.ca",
+        "(294) 840-6685",
+        False,
+    ),
+]
+
+
+persons = Contacts("user_class.dat", contacts)
+persons.save_to_file()
+first = persons.read_from_file()
+first.save_to_file()
+second = first.read_from_file()
+second.save_to_file()
+third = second.read_from_file()
+
+print(persons.count_save)  # 0
+print(first.count_save)  # 1
+print(second.count_save)  # 2
+print(third.count_save)  # 3
+
+person_from_file = persons.read_from_file()
+print(persons.is_unpacking)  # False
+print(person_from_file.is_unpacking)  # True
+
+copy_person = Person.copy_class_person(person)
+
+print(copy_person == person)  # False
+print(copy_person.name == person.name)  # True        
+
+new_persons = Contacts.copy_class_contacts(persons)
+new_persons.contacts[0].name = "Another name"
+
+print(persons.contacts[0].name)  # Allen Raymond
+print(new_persons.contacts[0].name)  # Another name     
+        
